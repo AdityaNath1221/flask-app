@@ -20,7 +20,7 @@ spec:
       containers:
       - name: flask-devops-demo
 
-        image: aditya1221hitk/flask-devops-demo:latest
+        image: adityanath1221/flask-app-demo:latest
 
         ports:
         - containerPort: 5000
