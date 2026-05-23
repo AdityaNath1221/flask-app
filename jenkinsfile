@@ -28,7 +28,9 @@ pipeline {
         stage('Deploy to Kubernetes Server') {
             steps {
                 sh '''
-                ssh vagrant@192.168.56.15 "
+                ssh -i /var/lib/jenkins/.ssh/id_rsa \
+                -o StrictHostKeyChecking=no \
+                vagrant@192.168.56.15 "
                     kubectl apply -f /home/vagrant/flask-app/deployment.yaml &&
                     kubectl apply -f /home/vagrant/flask-app/service.yaml
                 "
