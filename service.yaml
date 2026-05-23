@@ -5,7 +5,7 @@ metadata:
   name: flask-devops-service
 
 spec:
-  type: NodePort
+  type: LoadBalancer
 
   selector:
     app: flask-devops-demo
@@ -13,4 +13,3 @@ spec:
   ports:
     - port: 5000
       targetPort: 5000
-      nodePort: 30007

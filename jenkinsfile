@@ -40,13 +40,7 @@ pipeline {
 
                     kubectl apply -f /home/vagrant/flask-app/deployment.yaml &&
 
-                    kubectl apply -f /home/vagrant/flask-app/service.yaml &&
-
-                    setsid kubectl port-forward service/flask-devops-service \
-                    5000:5000 --address=0.0.0.0 \
-                    > /dev/null 2>&1 < /dev/null &
-
-                    exit
+                    kubectl apply -f /home/vagrant/flask-app/service.yaml
                 "
                 '''
             }
