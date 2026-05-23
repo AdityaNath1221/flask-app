@@ -31,10 +31,20 @@ pipeline {
                 ssh -i /var/lib/jenkins/.ssh/id_rsa \
                 -o StrictHostKeyChecking=no \
                 vagrant@192.168.56.15 "
-                    rm -rf flask-app
-                    git clone https://github.com/AdityaNath1221/flask-app.git
+
+                    pkill kubectl || true &&
+
+                    rm -rf flask-app &&
+
+                    git clone https://github.com/AdityaNath1221/flask-app.git &&
+
                     kubectl apply -f /home/vagrant/flask-app/deployment.yaml &&
-                    kubectl apply -f /home/vagrant/flask-app/service.yaml
+
+                    kubectl apply -f /home/vagrant/flask-app/service.yaml &&
+
+                    nohup kubectl port-forward service/flask-devops-service \
+                    5000:5000 --address=0.0.0.0 \
+                    > /dev/null 2>&1 &
                 "
                 '''
             }
