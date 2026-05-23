@@ -1,0 +1,39 @@
+pipeline {
+    agent any
+
+    environment {
+        DOCKER_IMAGE = "adityanath1221/flask-app-demo"
+    }
+
+    stages {
+
+        stage('Build Docker Image') {
+            steps {
+                script {
+                    docker.build("${DOCKER_IMAGE}:latest")
+                }
+            }
+        }
+
+        stage('Push Docker Image') {
+            steps {
+                script {
+                    docker.withRegistry('https://index.docker.io/v1/', 'dockerhub-creds') {
+                        docker.image("${DOCKER_IMAGE}:latest").push()
+                    }
+                }
+            }
+        }
+
+        stage('Deploy to Kubernetes Server') {
+            steps {
+                sh '''
+                ssh vagrant@192.168.56.15 "
+                    kubectl apply -f /home/vagrant/flask-app/deployment.yaml &&
+                    kubectl apply -f /home/vagrant/flask-app/service.yaml
+                "
+                '''
+            }
+        }
+    }
+}
